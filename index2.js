@@ -2,28 +2,28 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("loaded");
 });
 
-const tForm = document.querySelector("#create-task-form");
-const descBox = document.querySelector("#new-task-description");
+const tForm = document.getElementById("create-task-form");
 const taskBox = document.querySelector("#tasks");
-const label = document.querySelector('label[for="new-task-description"]')
+const descBox = document.querySelector("#new-task-description");
 console.log(descBox);
 ///selector
 
 //Create array of options to be added
-function createPriorityList(e) {
+function createList(e) {
   const array = ["high priority", "normal priority", "low priority"];
   //Create and append select list
-  const priorityList= document.createElement("select");
-  priorityList.id = "priorityList";
-  tForm.insertBefore(priorityList, descBox.nextSibling);
-  //Create and append the options
+  const selectList = document.createElement("select");
+  selectList.id = "mySelect";
+  tForm.appendChild(selectList);
+  //Create and append the options //ITERATOR
   for (let i = 0; i < array.length; i++) {
     let option = document.createElement("option");
     option.value = array[i];
     option.text = array[i];
-    priorityList.appendChild(option);
+    selectList.appendChild(option);
   }
 }
+createList();
 
 ///task
 
@@ -43,11 +43,9 @@ function renderTask(e, color) {
 
 function createTask(e) {
   e.preventDefault();
-  const task = descBox.value;
-  const priority = document.getElementById("priorityList");
-  opt = priority.options[priority.selectedIndex];
-  console.log(priority.options)
-  console.log(opt)
+  const task = e.target.querySelector("#new-task-description").value;
+  const sel = document.getElementById("mySelect");
+  opt = sel.options[sel.selectedIndex];
 
   if (opt.value == "high priority" && task !== "") {
     renderTask(task, "red");
@@ -69,7 +67,6 @@ function removeTask(e) {
 }
 
 function init() {
-  createPriorityList();
   tForm.addEventListener("submit", createTask);
 }
 
